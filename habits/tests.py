@@ -80,7 +80,7 @@ class HabitTestCase(APITestCase):
         self.assertEqual(self.habit.place, data['place'])
 
     def test_delete_habit(self):
-        not_owner = User.objects.create(id=2, email='moderator@test.ru',
+        not_owner = User.objects.create(id=3, email='moderator@test.ru',
                                         password='12345')
         self.client.force_authenticate(user=not_owner)
         path = reverse('habits:habit_delete', [self.habit.id])
