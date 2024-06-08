@@ -10,6 +10,11 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
     def get_permissions(self):
-        if self.action == "create":
-            return [AllowAny]
-        return [IsAuthenticated]
+        if self.action == 'create':
+            self.permission_classes = [AllowAny]
+        return super().get_permissions()
+
+    def perform_create(self, serializer):
+        user = serializer.save(is_active=True)
+        user.set_password(user.password)
+        user.save()

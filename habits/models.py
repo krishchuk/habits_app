@@ -15,7 +15,7 @@ class Habit(models.Model):
         ('6', 'раз в 6 дней'),
         ('7', 'раз в 7 дней'),
     ]
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь', **NULLABLE)
     place = models.CharField(max_length=250, verbose_name='место')
     time = models.TimeField(verbose_name='время')
     action = models.CharField(max_length=250, verbose_name='действие')
@@ -23,7 +23,7 @@ class Habit(models.Model):
     nice_habit = models.ForeignKey('self', on_delete=models.SET_NULL, verbose_name='связанная привычка', **NULLABLE)
     periodicity = models.CharField(max_length=1, choices=PERIODS, default=1, verbose_name='периодичность')
     gift = models.CharField(max_length=250, verbose_name='вознаграждение', **NULLABLE)
-    action_time = models.TimeField(max_length=120, verbose_name='время на выполнение')
+    action_time = models.PositiveIntegerField(default=60, verbose_name='время на выполнение (сек)')
     is_public = models.BooleanField(default=False, verbose_name='публичная привычка')
 
     def __str__(self):
