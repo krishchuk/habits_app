@@ -15,12 +15,14 @@ class TestTelegramBot(unittest.TestCase):
     def test_send_telegram_message(self, mock_post):
         mock_post.return_value.json.return_value = {'ok': True}
 
+        chat_id = 1344834850
         message_text = 'Тестовое сообщение'
-        response = send_telegram_message('@deniskrishchuk', message_text)
+        response = send_telegram_message(chat_id, message_text)
+        print(response)
 
         mock_post.assert_called_once_with(
-            'https://api.telegram.org/bot{}/sendMessage'.format(TELEGRAM_TOKEN),
-            json={'chat_id': '@deniskrishchuk', 'text': message_text}
+            f'https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage?chat_id={chat_id}&text={message_text}',
+            json={'chat_id': chat_id, 'text': message_text}
         )
 
         self.assertEqual(response, {'ok': True})
@@ -48,7 +50,7 @@ class HabitTestCase(APITestCase):
             'gift': 'gift test',
             'action_time': 120,
             'is_public': True
-            }
+        }
         response = self.client.post('/habits/create/', data=data, format='json')
         print(response)
 
