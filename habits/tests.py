@@ -48,7 +48,7 @@ class HabitTestCase(APITestCase):
             'gift': 'gift test',
             'action_time': 120,
             'is_public': True
-            }
+        }
         response = self.client.post('/habits/create/', data=data, format='json')
         print(response)
 
