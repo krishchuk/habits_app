@@ -9,11 +9,7 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["id", "email", "password", "phone", "city", "avatar", "tg_nick"]
-
-    def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
-        return user
+        fields = ["id", "email", "password", 'first_name', 'last_name', "phone", "city", "avatar", "tg_nick"]
 
     def update(self, instance, validated_data):
         password = validated_data.pop("password", None)
