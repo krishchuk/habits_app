@@ -1,10 +1,10 @@
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from habits.models import Habit
 from habits.paginators import CustomPagination
 from habits.permissions import IsOwner, ReadOnlyUnlessPublic
-from habits.serializers import HabitSerializer
+from habits.serializers import HabitSerializer, HabitPublicSerializer
 
 
 class HabitListAPIView(generics.ListAPIView):
@@ -12,6 +12,13 @@ class HabitListAPIView(generics.ListAPIView):
     queryset = Habit.objects.all()
     pagination_class = CustomPagination
     permission_classes = [IsAuthenticated | ReadOnlyUnlessPublic]
+
+
+class HabitPublicListAPIView(generics.ListAPIView):
+    serializer_class = HabitPublicSerializer
+    queryset = Habit.objects.filter(is_public=True)
+    pagination_class = CustomPagination
+    permission_classes = [AllowAny]
 
 
 class HabitDetailAPIView(generics.RetrieveAPIView):
