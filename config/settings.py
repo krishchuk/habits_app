@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import os
+from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     'django_filters',
     'drf_yasg',
     'corsheaders',
+    'django_celery_beat',
 
     'users',
     'habits',
@@ -90,11 +92,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('NAME'),
-        'USER': os.getenv('USER'),
-        'PASSWORD': os.getenv('PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT', 5432),
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST'),
+        'PORT': os.getenv('POSTGRES_PORT', 5432),
     }
 }
 
@@ -160,6 +162,13 @@ CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')  # URL-адрес б�
 CELERY_TIMEZONE = "Asia/Yekaterinburg"  # Часовой пояс для работы Celery
 CELERY_TASK_TRACK_STARTED = True  # Флаг отслеживания выполнения задач
 CELERY_TASK_TIME_LIMIT = 30 * 60  # Максимальное время на выполнение задачи
+
+CELERY_BEAT_SCHEDULE = {
+    'task-name': {
+        'task': 'habits.tasks.send_habit_notifications',  # Путь к задаче
+        'schedule': timedelta(minutes=1),  # Расписание выполнения задачи (1 раз в минуту)
+    },
+}
 
 # CORS
 CORS_ALLOWED_ORIGINS = [
