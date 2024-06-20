@@ -4,13 +4,13 @@ services:
 
   redis:
     image: redis:latest
-    restart: on_failure
+    restart: on-failure
     expose:
       - "6379"
 
   db:
     image: postgres:16
-    restart: on_failure
+    restart: on-failure
     env_file:
       - .env
     expose:
